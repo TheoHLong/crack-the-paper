@@ -1,9 +1,9 @@
 ---
-name: read-paper
+name: crack-the-paper
 description: Active reading guide for scientific papers, based on Carey, Steiner, and Petri (2020) "Ten simple rules for reading a scientific paper." Use whenever the user uploads a research paper (PDF, arXiv link, or pasted text) and wants to read, summarize, critique, take notes on, prepare a journal club presentation, or extract takeaways from it. Especially useful for ML/AI papers (interpretability, safety, deep learning, neuroscience-to-ML crossover) but works for any scientific article. Trigger this even when the user just says things like "help me read this paper", "what's this paper about", "summarize this for me", "I need to present this", or uploads a PDF without further instruction — assume active reading is wanted unless they explicitly ask for something narrow like a one-line TLDR.
 ---
 
-# Read a Scientific Paper
+# Crack the Paper
 
 This skill operationalizes the ten rules from Carey, Steiner, and Petri (2020) for active reading of scientific literature. The goal is to help the user truly understand a paper — its motivation, methods, data, and limitations — rather than skim it.
 

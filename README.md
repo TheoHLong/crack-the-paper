@@ -42,7 +42,7 @@ The 11th step is what most paper-reading advice misses. A paper from 2020 means 
 
 ## Install
 
-1. Download [`read-paper.skill`](./read-paper.skill)
+1. Download [`crack-the-paper.skill`](./crack-the-paper.skill)
 2. In Claude.ai, go to Settings → Capabilities → Skills, and upload the file
 3. Upload a paper to Claude and it will trigger automatically
 
@@ -53,8 +53,8 @@ You can also clone the repo and use the raw `SKILL.md` directly with Claude Code
 ```
 crack-the-paper/
 ├── README.md
-├── read-paper.skill          # Packaged skill, ready to install
-└── read-paper/
+├── crack-the-paper.skill     # Packaged skill, ready to install
+└── crack-the-paper/
     └── SKILL.md              # The skill source — workflow, templates, prompts
 ```
 
