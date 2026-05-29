@@ -1,21 +1,21 @@
 # Crack the Paper
 
-A portable AI-agent skill that turns paper reading from passive consumption into active interrogation. It can be used as a packaged Claude skill or as a raw `SKILL.md` folder for Codex and other skill-compatible agents.
+A portable AI-agent skill that turns research-paper and long-form technical reading from passive consumption into active interrogation. It can be used as a packaged Claude skill or as a raw `SKILL.md` folder for Codex and other skill-compatible agents.
 
 **Philosophy:** A paper is not a truth etched in stone. It is one team's argument, made with selected evidence, framed in their preferred light. Reading well means following the figures, pushing back on the claims, asking what the field decided afterward — not just absorbing the abstract.
 
 ## What You Get
 
-Give the agent a paper (PDF, arXiv link, DOI, URL, or pasted text). It will produce **a structured reading note** you can save and refer back to, written for *your* background.
+Give the agent a paper, long-form research blog, technical report, interactive article, PDF, arXiv link, DOI, URL, or pasted text. It will produce **a structured reading note** you can save and refer back to, written for *your* background.
 
-The structured note walks figure by figure through the paper's evidence, articulates why the authors sequenced their figures that way, pushes back critically on the claims, searches the web for follow-up work and field reception, and connects the paper to your own research, courses, and ongoing projects.
+The structured note follows the paper's evidence rather than its abstract. For standard papers, it walks figure by figure; for long-form blogs, technical reports, and interactive articles, it groups evidence into the central claim clusters. It pushes back critically on the claims, searches the web for follow-up work and field reception, and connects the paper to your own research, courses, and ongoing projects.
 
 ## How It's Different from "Summarize This Paper"
 
 Most paper summarizers give you a polished version of the abstract. This skill does the opposite:
 
-* **Figures lead, prose follows.** The "Key results" section walks through every figure and table in the order the paper presents them, and articulates *what each one is doing in the argument*. The sequencing of figures is itself a rhetorical choice; you'll see it.
-* **Critique is the default, not an afterthought.** Every claim gets pushed on: alternative explanations, methodology limits, generalization concerns, missing baselines. For ML/AI papers, common failure modes (suggestive-not-causal interpretability evidence, cherry-picked baselines, single-seed results) are checked by default.
+* **Evidence leads, prose follows.** For standard papers, the "Key results" section walks through figures and tables in the order the paper presents them. For long-form blogs, technical reports, and interactive articles, it groups figures, examples, and sections by the claims they support.
+* **Critique is the default, not an afterthought.** Every claim gets pushed on: alternative explanations, methodology limits, generalization concerns, missing controls, and field-specific failure modes.
 * **The story doesn't end with the paper.** For papers older than ~6 months, the skill searches for follow-up work, replications, criticisms, and real-world adoption. Sometimes the most important fact about a paper is what the field did or didn't do with it.
 * **Notes are written for you.** The skill calibrates vocabulary, math depth, and tone to your background (subfield expertise specifically, not general technical level), using only the current conversation and any memory available to the agent.
 
@@ -27,7 +27,7 @@ Based on Carey, Steiner, and Petri (2020) "[Ten simple rules for reading a scien
 2. Understand the author's goal — what kind of paper is this?
 3. Ask six questions — motivation, approach, context, results, interpretation, next steps
 4. Unpack each figure and table — the data is the paper
-5. Read sections for what they are — Discussion is opinion, Results is data
+5. Read sections for what they are — separate claims from evidence
 6. Be critical — published papers in top venues are not truths etched in stone
 7. Be kind — authors are human; separate cosmetic flaws from substantive ones
 8. Go the extra mile — look up the terms, read the cited references
