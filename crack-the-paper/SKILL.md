@@ -1,6 +1,6 @@
 ---
 name: crack-the-paper
-description: Active reading guide for scientific papers, based on Carey, Steiner, and Petri (2020) "Ten simple rules for reading a scientific paper." Use whenever the user uploads a research paper (PDF, arXiv link, or pasted text) and wants to read, summarize, critique, take notes on, prepare a journal club presentation, or extract takeaways from it. Especially useful for ML/AI papers (interpretability, safety, deep learning, neuroscience-to-ML crossover) but works for any scientific article. Trigger this even when the user just says things like "help me read this paper", "what's this paper about", "summarize this for me", "I need to present this", or uploads a PDF without further instruction — assume active reading is wanted unless they explicitly ask for something narrow like a one-line TLDR.
+description: Active reading-note generator for scientific papers, based on Carey, Steiner, and Petri (2020) "Ten simple rules for reading a scientific paper." Use whenever the user provides a research paper (PDF, arXiv link, DOI, URL, or pasted text) and wants to read, summarize, critique, take notes on, understand, or extract takeaways from it. Especially useful for ML/AI papers (interpretability, safety, deep learning, neuroscience-to-ML crossover) but works for any scientific article. Trigger this even when the user just says things like "help me read this paper", "what's this paper about", "summarize this for me", or provides a likely research-paper PDF without further instruction. Default to producing a structured reading note; do not ask the user to choose a mode.
 ---
 
 # Crack the Paper
@@ -14,15 +14,25 @@ Active reading means reading with intent to understand and critique, not to pass
 1. **The reader's goal shapes the reading.** A person new to a field reads differently than someone evaluating a paper for journal club.
 2. **Published papers are not truths etched in stone.** Even high-impact papers from famous labs have limitations, biases, and alternative interpretations worth surfacing.
 
-## Step 1: Pick a mode
+## Step 1: Default to a structured reading note
 
-When the user brings a paper, ask which mode they want, unless their message contains an unmistakable signal (e.g. they literally said "summarize this", "take notes", "walk me through this"). Bare PDF uploads with no instruction, or short messages like "help me with this paper", count as ambiguous — ask.
+When the user brings a paper, produce a structured reading note by default. Do not offer multiple modes or ask whether they want a walkthrough. Bare research-paper uploads with no instruction, or short messages like "help me with this paper", should trigger the skill and proceed with `Read for: general understanding`.
 
-**Guided mode** (conversational walkthrough): The user wants to learn how to read papers, is new to the topic, or signals they want to discuss as they go. In this mode, take the user through the paper section by section, asking the Rule 3 questions and waiting for their thoughts before moving on.
+If the user states a purpose (coursework, journal club, evaluating a method for their own research, tracking a technique, curiosity), adapt emphasis accordingly. If no purpose is stated, do not block on clarification.
 
-**Notes mode** (direct deliverable): The user wants a structured artifact they can save and refer back to. In this mode, produce a structured markdown note (see template below) without back-and-forth, and save it as a file using the present_files tool so the user can keep it.
+If the environment supports file artifacts or workspace writes, save the note as a Markdown file; otherwise return it inline.
 
-When asking, also briefly check the user's intention: what are they reading this for? Examples: studying for a course, evaluating a method for their own research, preparing journal club, just curious. The answer shapes which sections get emphasis (see Step 2). Combine both questions into one short message — don't make it feel like an interrogation.
+Ask a clarifying question only when the paper itself is unavailable, the user request is too narrow to execute from the available artifact, or the user's purpose would materially change the output and cannot be inferred. Keep clarification to one short question.
+
+## Operational intake
+
+Before reading deeply, establish what material is actually available and what can be inspected.
+
+- If the user provides a PDF, extract the title, authors, venue/year if visible, abstract, section headings, figure captions, tables, references, supplement links, and code/data links when available.
+- If the user provides an arXiv link, DOI, or paper URL, use available browser, search, or download tools to retrieve metadata and paper text. If those tools are unavailable, proceed from the content the user supplied and state the limitation.
+- If the paper text is pasted without figures, say that figure-level analysis will be limited unless captions, images, or tables are available.
+- If figures or tables cannot be read clearly, do not infer details from the prose alone. Mark those parts as unavailable and focus on the visible text.
+- For ML/AI papers, also look for appendix material, benchmark setup, code repositories, model cards, dataset links, and evaluation scripts because key methodological details often live outside the main paper.
 
 ## Step 2: Identify the reader's intention and the paper's type
 
@@ -32,7 +42,7 @@ Before reading deeply, anchor on two things:
 
 | If the user is... | Prioritize... |
 |---|---|
-| New to scientific reading | Every figure panel, asking Rule 3 questions of each |
+| New to scientific reading | Explain every figure panel carefully and define core concepts on first use |
 | Entering a new field | Introduction (motivation) + Conclusion (next steps) |
 | Tracking a specific author | Skim the whole thing, place it in their publication arc |
 | Tracking a technique or topic | Methods + the motivation in the introduction |
@@ -50,9 +60,9 @@ Before reading deeply, anchor on two things:
 
 For ML/AI papers specifically, also note: is this empirical (experiments and benchmarks), theoretical (proofs, formal results), interpretability-style (analyzing an existing model), or a system paper (engineering an artifact)? The reading priorities differ.
 
-## Step 3: Ask the six questions (Rule 3)
+## Step 3: Use the six questions (Rule 3)
 
-For the paper as a whole, and again for each major figure or experiment, work through:
+For the paper as a whole, and again for each major figure or experiment, use this as an internal checklist:
 
 1. **Motivation** — what do the authors want to know?
 2. **Approach** — what did they actually do?
@@ -67,7 +77,7 @@ The sixth question is where most readers slack off. Always do it yourself before
 
 The data is the paper. The prose is the authors' framing of the data. Read figures and tables on their own terms first.
 
-**In notes mode, the "Key results" section should follow the figure/table sequence as its narrative spine.** Don't bullet the findings in an arbitrary order. Walk through figures and tables in the order the paper presents them, explain what each one shows, and then articulate **why the authors arranged them in that order** — what is each figure doing in the argument? The sequencing is itself a rhetorical choice and reveals what the authors think their strongest evidence is.
+**In the reading note, the "Key results" section should follow the figure/table sequence as its narrative spine.** Don't bullet the findings in an arbitrary order. Walk through figures and tables in the order the paper presents them, explain what each one shows, and then articulate **why the authors arranged them in that order** — what is each figure doing in the argument? The sequencing is itself a rhetorical choice and reveals what the authors think their strongest evidence is.
 
 Also note what the figures **don't** show. If the paper has a benchmark table but no variance bars, no comparison to obvious baselines, or no ablation of a claimed-important component, point that out alongside the figure that "should have" included it.
 
@@ -162,7 +172,7 @@ The lego brick metaphor: every paper sits on a wall of prior work, and your own 
 - Their own ongoing work (which brick are they trying to lay?)
 - Open questions the paper opens up (what bricks come next?)
 
-**Personalize the Connections section using what's in user memory.** If you know the user's research area, coursework, ongoing projects, or technical background, use that knowledge to draw specific connections — not generic "this might be relevant to ML researchers" platitudes. The Connections section is where the notes go from generic to genuinely useful, and personalization is what makes that flip. If the user has explicitly asked for a non-personalized read, respect that; otherwise default to personalizing.
+**Personalize the Connections section using only available context.** If the conversation or accessible memory gives the user's research area, coursework, ongoing projects, or technical background, use that knowledge to draw specific connections — not generic "this might be relevant to ML researchers" platitudes. Do not invent missing background, and do not surface personal details unless they directly improve the reading note. If the user has explicitly asked for a non-personalized read, respect that; otherwise default to personalizing from available context.
 
 For the user's career stage and goals, also prompt:
 - Is there a technique here worth implementing or adapting?
@@ -173,11 +183,11 @@ For the user's career stage and goals, also prompt:
 
 For papers more than ~6 months old, the paper itself is only half the story. The other half is **what the field did with it** — follow-up work, replications, criticisms, extensions, real-world adoption (or failure to adopt). This context often changes how to read the original.
 
-For notes mode, do a web search for follow-up work and assessments before finalizing the note. Useful queries:
-- `<paper title or key method name> follow-up` or `<method name> 2023 2024 2025`
+For the reading note, use available web/search tools for follow-up work and assessments before finalizing the note. Use the current year and recent prior years rather than hard-coded dates. Useful queries:
+- `<paper title or key method name> follow-up` or `<method name> <current year> <previous 2-3 years>`
 - `<paper title> criticism` or `<method name> limitations`
 - `<first author last name> <method name>` to find the authors' own follow-up work
-- Google Scholar "cited by" if the paper is on arXiv (the arXiv ID is in the citation)
+- Google Scholar, Semantic Scholar, Connected Papers, Papers with Code, or arXiv citation trails when available
 
 What to look for:
 - Direct extensions by the same authors (often reveals what they themselves thought needed fixing)
@@ -188,11 +198,20 @@ What to look for:
 
 Include this as a dedicated section in the notes (see template). Be honest if the answer is "this paper was largely forgotten" — that's itself important information, often more so than a list of citations.
 
-If the paper is very recent (<6 months) or the search returns nothing substantive, say so briefly rather than padding the section.
+Include links or precise source names/dates for claims about follow-up work when the environment supports that. If web tools are unavailable, the user forbids search, the paper is very recent (<6 months), or the search returns nothing substantive, say so briefly rather than padding the section.
 
-## Output: Notes Mode template
+## Output: Structured reading note
 
-When producing a structured reading note (notes mode), use this template. Adapt sections to the paper type and reader's intention; don't pad sections that aren't useful.
+Always produce a structured reading note using this template. Adapt sections to the paper type and reader's intention; don't pad sections that aren't useful.
+
+Default output behavior:
+
+- Start with metadata, paper type, and the user's purpose or `general understanding`.
+- Separate the authors' claims from what the data actually shows.
+- Make "Key results" figure/table-driven rather than abstract-driven.
+- Surface limitations next to the result they weaken, then summarize broader concerns in "Critical read" and "What's missing."
+- Mark unavailable evidence explicitly instead of guessing from prose.
+- End with a concrete take-home, not a question or an offer.
 
 **Length calibration.** Match the note length to the paper's complexity, not to the template's section count. A short methods paper or a focused empirical paper might warrant a 600 to 1000 word note. A dense theory paper, a long review, or a paper with many experiments might warrant 1500 to 2500 words. If a section has nothing substantive to add, write one sentence and move on — don't pad. The reader is busy.
 
@@ -233,7 +252,7 @@ When producing a structured reading note (notes mode), use this template. Adapt 
 [What happened after this paper. Direct follow-ups by the same authors, independent extensions, criticisms, replications, real-world adoption or non-adoption. Be honest if the paper was largely forgotten. Skip or shorten if the paper is too recent for this to be answerable.]
 
 ## Connections
-[How does this relate to the reader's own work, courses, or research area? Use what you know about the reader from memory and earlier conversation to make this specific. Generic ML/AI relevance is not useful here.]
+[How does this relate to the reader's own work, courses, or research area? Use only information available in the current conversation or accessible memory, and do not invent background. Keep personal details minimal and relevant. Generic ML/AI relevance is not useful here.]
 
 ## Open questions / next steps
 [What would you want to know next? What experiments would settle the remaining doubts?]
@@ -248,7 +267,7 @@ Default to the language the user is writing in. If they're writing in Chinese, p
 
 ## Voice and level
 
-The notes are written **for the specific reader**, not for a generic audience. Adapt the prose level using what you know about them from memory and conversation.
+The notes are written **for the specific reader**, not for a generic audience. Adapt the prose level using only information available in the current conversation or accessible memory. Do not invent the user's background, and do not expose sensitive personal details that are not necessary for the note.
 
 **Calibrate to their expertise in the paper's subfield specifically**, not their general technical level. Someone with a PhD in one area is a beginner in another. A neuroscience PhD reading an interpretability paper has deep methodological intuitions but may not know which SAE variant is current; an ML engineer reading a neuroscience paper knows tensor math but may not know what a spike-triggered average is.
 
@@ -269,4 +288,4 @@ If you have no information about the reader's level in this specific subfield, d
 - Don't be falsely deferential to high-impact venues or famous labs. Critique on the merits.
 - Don't manufacture critique either — if a result is solid, say so. Phony skepticism is as useless as phony enthusiasm.
 - Don't reproduce extended passages from the paper. Paraphrase. Quote sparingly (under 15 words at a time) when exact wording matters.
-- Don't end a notes-mode output with a question. End with the take-home.
+- Don't end a reading note with a question. End with the take-home.

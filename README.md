@@ -1,15 +1,12 @@
 # Crack the Paper
 
-A [Claude skill](https://support.anthropic.com/) that turns paper reading from passive consumption into active interrogation.
+A portable AI-agent skill that turns paper reading from passive consumption into active interrogation. It can be used as a packaged Claude skill or as a raw `SKILL.md` folder for Codex and other skill-compatible agents.
 
 **Philosophy:** A paper is not a truth etched in stone. It is one team's argument, made with selected evidence, framed in their preferred light. Reading well means following the figures, pushing back on the claims, asking what the field decided afterward — not just absorbing the abstract.
 
 ## What You Get
 
-Upload a paper to Claude (PDF, arXiv link, pasted text). Claude will ask whether you want:
-
-* **A guided walkthrough** — section by section, asking you the right questions as you go, so you learn how to read papers, not just what this one says
-* **A structured note** — a markdown file you can save and refer back to, written for *your* background
+Give the agent a paper (PDF, arXiv link, DOI, URL, or pasted text). It will produce **a structured reading note** you can save and refer back to, written for *your* background.
 
 The structured note walks figure by figure through the paper's evidence, articulates why the authors sequenced their figures that way, pushes back critically on the claims, searches the web for follow-up work and field reception, and connects the paper to your own research, courses, and ongoing projects.
 
@@ -20,7 +17,7 @@ Most paper summarizers give you a polished version of the abstract. This skill d
 * **Figures lead, prose follows.** The "Key results" section walks through every figure and table in the order the paper presents them, and articulates *what each one is doing in the argument*. The sequencing of figures is itself a rhetorical choice; you'll see it.
 * **Critique is the default, not an afterthought.** Every claim gets pushed on: alternative explanations, methodology limits, generalization concerns, missing baselines. For ML/AI papers, common failure modes (suggestive-not-causal interpretability evidence, cherry-picked baselines, single-seed results) are checked by default.
 * **The story doesn't end with the paper.** For papers older than ~6 months, the skill searches for follow-up work, replications, criticisms, and real-world adoption. Sometimes the most important fact about a paper is what the field did or didn't do with it.
-* **Notes are written for you.** The skill calibrates vocabulary, math depth, and tone to your background (subfield expertise specifically, not general technical level), using what Claude knows about you from memory and conversation.
+* **Notes are written for you.** The skill calibrates vocabulary, math depth, and tone to your background (subfield expertise specifically, not general technical level), using only the current conversation and any memory available to the agent.
 
 ## Philosophy in 11 Steps
 
@@ -42,11 +39,22 @@ The 11th step is what most paper-reading advice misses. A paper from 2020 means 
 
 ## Install
 
+### Claude-compatible upload
+
 1. Download [`crack-the-paper.skill`](./crack-the-paper.skill)
 2. In Claude.ai, go to Settings → Capabilities → Skills, and upload the file
-3. Upload a paper to Claude and it will trigger automatically
+3. Upload a paper and it will trigger automatically
 
-You can also clone the repo and use the raw `SKILL.md` directly with Claude Code or any agent that supports skills.
+### Codex or raw-folder install
+
+Clone the repo and install the inner [`crack-the-paper/`](./crack-the-paper/) folder, not the outer repository folder. The skill root is the directory that directly contains `SKILL.md`:
+
+```
+crack-the-paper/
+└── SKILL.md
+```
+
+For a local Codex install, copy or symlink that inner folder into the skills directory your Codex setup loads.
 
 ## Repository structure
 
@@ -60,7 +68,7 @@ crack-the-paper/
 
 ## Built With
 
-* [skill-creator](https://github.com/anthropics/skills) — Anthropic's official scaffolding for building Claude skills
+* [skill-creator](https://github.com/anthropics/skills) — scaffolding for building portable agent skills
 * The original [Ten Simple Rules](https://doi.org/10.1371/journal.pcbi.1008032) paper by Carey, Steiner, and Petri (2020)
 
 ## Contributing
